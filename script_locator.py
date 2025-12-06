@@ -122,6 +122,15 @@ def format_call_stack(stack):
     return "\n".join(lines) if lines else "  (empty stack)"
 
 
+def check_multiple_files(website_url: str, files_to_find: list, headless: bool = True):
+    """Check if multiple files load on a website."""
+    results = {}
+    for file_url in files_to_find:
+        print(f"\n🔍 Checking: {file_url}")
+        results[file_url] = check_if_file_loads(website_url, file_url, headless)
+    return results
+
+
 def main():
     # ============================================
     # CONFIGURE YOUR CHECK HERE

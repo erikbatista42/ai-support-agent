@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from rich.markdown import Markdown
 from rich.console import Console
 
@@ -63,9 +64,76 @@ def ask_about_code(question, repo="erikbatista42/tiny-llm"):
     result = response.json()
     return result.get("message", "No answer found.")
 
+def extract_urls_with_grok(text: str) -> list[dict]:
+    """
+    Use Grok to extract relevant URLs from text.
+    Returns a list of dicts with 'url' and 'description' keys.
+    """
+    chat = client.chat.create(
+        model="grok-4-1-fast",  # Fast and cheap for extraction tasks
+    )
+    
+    chat.append(system("""
+You are a URL extractor. Given text, extract all URLs that appear to be:
+- Script URLs (.js files)
+- API endpoints
+- Asset URLs (images, CSS, etc.)
+- Any other relevant resource URLs
+
+Return a JSON object with this exact structure:
+{
+    "urls": [
+        {
+            "url": "https://example.com/script.js",
+            "type": "script",
+            "description": "Brief description of what this URL is for"
+        }
+    ]
+}
+
+If no URLs are found, return: {"urls": []}
+Only include complete, valid URLs (starting with http:// or https://).
+"""))
+    
+    chat.append(user(f"Extract all relevant URLs from this text:\n\n{text}"))
+    
+    response = chat.sample()
+    
+    try:
+        result = json.loads(response.content)
+        return result.get("urls", [])
+    except json.JSONDecodeError:
+        print("⚠️ Failed to parse Grok response as JSON")
+        return []
 
 console = Console()
 
-answer = ask_about_code("How is the neural network implemented?")
+answer = ask_about_code("Tell me how the srp is integrated")
 
-console.print(Markdown(answer))
+# console.print(Markdown(answer))
+result = extract_urls_with_grok(answer)
+urls = []
+for item in result:
+    urls.append(item['url'])
+
+print(urls)
+
+# ============================================
+# CHECK URLS ON TARGET WEBSITE
+# ============================================
+from script_locator import check_multiple_files
+
+website_url = "https://gooba.motivehq.site/"  # Change this to your target
+
+if urls:
+    print(f"\n🌐 Checking {len(urls)} URL(s) on {website_url}\n")
+    results = check_multiple_files(website_url, urls, headless=True)
+    
+    print("\n" + "=" * 60)
+    print("📋 RESULTS")
+    print("=" * 60)
+    for url, result in results.items():
+        status = "✅ FOUND" if result["found"] else "❌ NOT FOUND"
+        print(f"{status}: {url}")
+else:
+    print("No URLs to check.")
