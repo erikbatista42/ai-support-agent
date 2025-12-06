@@ -1,6 +1,7 @@
 import os
 import requests
-
+from rich.markdown import Markdown
+from rich.console import Console
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -62,4 +63,9 @@ def ask_about_code(question, repo="erikbatista42/tiny-llm"):
     result = response.json()
     return result.get("message", "No answer found.")
 
-print(ask_about_code("How is the neural network implemented?"))
+
+console = Console()
+
+answer = ask_about_code("How is the neural network implemented?")
+
+console.print(Markdown(answer))
