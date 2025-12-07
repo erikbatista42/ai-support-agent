@@ -1,6 +1,6 @@
-# AI Integration Support Agent
+# Technical Support Agent
 
-A conversational AI tool that helps verify script integrations on live websites.
+Technical support agent where you can ask questions about your codebase and verify scripts on live websites.
 
 ## What It Does
 
