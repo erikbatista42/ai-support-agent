@@ -13,15 +13,22 @@ load_dotenv()
 client = Client(api_key=os.getenv("XAI_API_KEY"))
 chat = client.chat.create(model="grok-4")
 
-def ask_file(prompt:str):
-    agent_file_id = "file_6ed62445-f5fe-4478-a588-e7fc3c8a796c"
+class Agent():
     
-    chat.append(system("You are an information agent. Your job is to pick the closest integration section from the document we're looking at and provide the exact name, description and the list of URLs the integration contains."))
-    chat.append(user(prompt, file(agent_file_id)))
-    print("🔎 Agent is searching for answer...")
-    response = chat.sample()
-    print("ANSWER:\n")
-    return response.content
+    def __init__(self, file_id:str, system_prompt:str):
+        self.file_id = file_id
+        self.system_prompt = system_prompt
+
+    
+    def ask_file(self, user_prompt:str):
+        chat.append(system(self.system_prompt))
+        chat.append(user(user_prompt, file(self.file_id)))
+        print("🔎 Agent is searching for answer...")
+        response = chat.sample()
+        print("Agent is searching file given:\n")
+        return response.content
+
+
 
 def extract_urls_from_content(content):
     # given the content, grab the URLs and put it into a python list
@@ -99,4 +106,8 @@ if __name__ == "__main__":
     content = ask_file("What does the srp integration do?")
     integration_urls = extract_urls_from_content(content)
     results = check_script_on_website(website_url="https://gooba.motivehq.site/", script_to_find=integration_urls[0])
+
+
+    agent = Agent(file_id="file_6ed62445-f5fe-4478-a588-e7fc3c8a796c")
+    
 
