@@ -116,11 +116,25 @@ if __name__ == "__main__":
         at_table_name="agent_logs"
         )
 
-    integration_information_urls = agent.ask_file("Check Autohub", extract_urls=True)
+    get_user_intention = input("Say 'Verify' if you want to verify an integration. Otherwise, ask a question about any integration. \n \n")
 
-    for url in integration_information_urls:
-        result = agent.check_script_on_website(website_url="https://gooba.motivehq.site/", script_to_find=url)
-        print(result) 
+    if get_user_intention == "Verify":
+            integration_information_urls = agent.ask_file(user_prompt=get_user_intention, extract_urls=True)
+            
+            for url in integration_information_urls:
+                result = agent.check_script_on_website(website_url="https://gooba.motivehq.site/", script_to_find=url)
+                print(result) 
+    else:
+        integration_information = agent.ask_file(user_prompt=get_user_intention, extract_urls=False)
+        print(integration_information)
+
+    
+
+
+    
+
+    
+
 
     
 
