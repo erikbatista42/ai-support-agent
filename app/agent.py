@@ -4,7 +4,7 @@ import requests
 import airtable
 from dotenv import load_dotenv
 from xai_sdk import Client
-from xai_sdk.chat import system, user, file
+from xai_sdk.chat import system, user, file, tool
 from playwright.sync_api import sync_playwright
 
 
@@ -23,6 +23,41 @@ class Agent():
         
         # Airtable config
         self.at_table_name = at_table_name
+
+        # Agent tools setup
+        self.agent_tools = None
+        self.tools_map = None
+
+    def setup_tools(self):
+        tool_definitions = [
+            tool(
+                name="check_script_on_website",
+                description="Use this to VERIFY if a script/integration is loading correctly on a website",
+                parameters={
+                    "type": "object",
+                    "properties": {
+                        "website_url": {
+                            "type": "string",
+                            "description": "The URL of the website to check",
+                            },
+                        "script_to_find": {
+                            "type": "string",
+                            "description": "The script URL or partial name to search for",
+                            },
+                        },
+                        "required": ["website_url", "script_to_find"]
+                        }
+                )
+            ]
+        
+        tools_map = {
+            "check_script_on_website": self.check_script_on_website
+        }
+
+        self.tool_definitions = tool_definitions
+        self.tools_map = tools_map
+
+
 
     
     def ask_file(self, user_prompt:str, extract_urls=False):
