@@ -29,9 +29,9 @@ class Agent():
         chat.append(system(self.system_prompt))
         chat.append(user(user_prompt, file(self.file_id)))
 
-        print("🔎 AGENT IS SEARCHING FILE GIVEN...")
+        print("🔎 AGENT IS SEARCHING FILE LOCATED IN xAI Collections...")
         response = chat.sample()
-        print("RESPONSE FROM AGENT:\n")
+        print("RESPONSE FROM AGENT:\n ", response.content)
 
         if extract_urls:
             return self.extract_urls_from_content(response.content)
@@ -101,22 +101,22 @@ class Agent():
                 airtable_instance = airtable.Airtable(base_id=os.getenv("AIRTABLE_BASE_ID"), api_key=os.getenv("AIRTABLE_API_KEY"))
                 airtable_instance.create(table_name=self.at_table_name, data=found_scripts_data)
             
-        for script in found_scripts:
-            print(f"Script URL: {script["script_url"]}")
-            print(f"Status: {script["script_status"]}")
-            print(f"Initiator: {script["initiator"]}")
-            print(f"Call stack summary: {script["call_stack_summary"]}")
+        # for script in found_scripts:
+        #     print(f"Script URL: {script["script_url"]}")
+        #     print(f"Status: {script["script_status"]}")
+        #     print(f"Initiator: {script["initiator"]}")
+        #     print(f"Call stack summary: {script["call_stack_summary"]}")
 
         return found_scripts
 
 if __name__ == "__main__":
     agent = Agent(
-        file_id="file_6ed62445-f5fe-4478-a588-e7fc3c8a796c", 
+        file_id="file_5b1f18d6-1536-4514-85b1-c5afc4ecf000", 
         system_prompt="You are an information agent. Your job is to pick the closest integration section from the document we're looking at and provide the exact name, description and the list of URLs the integration has if it has any.",
         at_table_name="agent_logs"
         )
 
-    integration_information_urls = agent.ask_file("What does the srp integration do?", extract_urls=True)
+    integration_information_urls = agent.ask_file("Check Autohub", extract_urls=True)
 
     for url in integration_information_urls:
         result = agent.check_script_on_website(website_url="https://gooba.motivehq.site/", script_to_find=url)
