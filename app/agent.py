@@ -1,17 +1,14 @@
 import os
-import re
-import requests
 import airtable
 from dotenv import load_dotenv
 from xai_sdk import Client
 from xai_sdk.chat import system, user, file, tool
+import json
 from playwright.sync_api import sync_playwright
-
 
 load_dotenv()
 
 client = Client(api_key=os.getenv("XAI_API_KEY"))
-chat = client.chat.create(model="grok-4")
 
 
 class Agent():
@@ -25,10 +22,11 @@ class Agent():
         self.at_table_name = at_table_name
 
         # Agent tools setup
-        self.agent_tools = None
         self.tools_map = None
 
+
     def setup_tools(self):
+        # Use xAI SDK's tool() helper function
         tool_definitions = [
             tool(
                 name="check_script_on_website",
@@ -39,16 +37,16 @@ class Agent():
                         "website_url": {
                             "type": "string",
                             "description": "The URL of the website to check",
-                            },
+                        },
                         "script_to_find": {
                             "type": "string",
                             "description": "The script URL or partial name to search for",
-                            },
                         },
-                        "required": ["website_url", "script_to_find"]
-                        }
-                )
-            ]
+                    },
+                    "required": ["website_url", "script_to_find"]
+                }
+            )
+        ]
         
         tools_map = {
             "check_script_on_website": self.check_script_on_website
@@ -58,25 +56,35 @@ class Agent():
         self.tools_map = tools_map
 
 
+    def run_with_tools(self, user_prompt: str):
+        self.setup_tools()
 
-    
-    def ask_file(self, user_prompt:str, extract_urls=False):
-        chat.append(system(self.system_prompt))
-        chat.append(user(user_prompt, file(self.file_id)))
+        # new chat with tools enabled
+        tool_chat = client.chat.create(
+            model="grok-4",
+            tools=self.tool_definitions, # here are the tools you can use
+            tool_choice="auto" # decide on your own when to use them
+        )
 
-        print("🔎 AGENT IS SEARCHING FILE LOCATED IN xAI Collections...")
-        response = chat.sample()
-        print("RESPONSE FROM AGENT:\n ", response.content)
+        tool_chat.append(system(self.system_prompt))
+        tool_chat.append(user(user_prompt, file(self.file_id)))
 
-        if extract_urls:
-            return self.extract_urls_from_content(response.content)
-        
+        response = tool_chat.sample()
+        print("RESPONSE TOOL CALLS-----", response.tool_calls)
+
+        for tool_call in response.tool_calls:
+            function_name = tool_call.function.name
+
+            if function_name == "check_script_on_website":
+                # print(f"Using tool: {function_name}")
+                function_args = json.loads(tool_call.function.arguments)
+                # print(f"   Arguments: {function_args}")
+
+                result = self.tools_map[function_name](**function_args)
+                return result
+
+        # If we get here, AI answered using built-in tools (like read_attachment)
         return response.content
-
-    def extract_urls_from_content(self, content):
-        # given the content, grab the URLs and put it into a python list
-        js_urls_in_content = re.findall(r'https?://[^\s"\'<>]+\.js', content)
-        return js_urls_in_content
 
 
     def check_script_on_website(self, website_url, script_to_find):
@@ -147,29 +155,10 @@ class Agent():
 if __name__ == "__main__":
     agent = Agent(
         file_id="file_5b1f18d6-1536-4514-85b1-c5afc4ecf000", 
-        system_prompt="You are an information agent. Your job is to pick the closest integration section from the document we're looking at and provide the exact name, description and the list of URLs the integration has if it has any.",
+        system_prompt="You are an information agent. When the user wants to verify a script on a website, use the check_script_on_website tool.",
         at_table_name="agent_logs"
         )
 
-    get_user_intention = input("Say 'Verify' if you want to verify an integration. Otherwise, ask a question about any integration. \n \n")
-
-    if get_user_intention == "Verify":
-            integration_information_urls = agent.ask_file(user_prompt=get_user_intention, extract_urls=True)
-            
-            for url in integration_information_urls:
-                result = agent.check_script_on_website(website_url="https://gooba.motivehq.site/", script_to_find=url)
-                print(result) 
-    else:
-        integration_information = agent.ask_file(user_prompt=get_user_intention, extract_urls=False)
-        print(integration_information)
-
-    
-
-
-    
-
-    
-
-
-    
-
+    user_input = input("Ask about integrations in Motive: \n \n")
+    result = agent.run_with_tools(user_input)
+    print(result)
