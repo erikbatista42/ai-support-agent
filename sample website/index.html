@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelVerse - Where Retro Meets Future</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Segment Analytics -->
+    <script>
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="YOUR_SEGMENT_WRITE_KEY";analytics.SNIPPET_VERSION="4.15.3";
+        analytics.load("YOUR_SEGMENT_WRITE_KEY");
+        analytics.page();
+        }}();
+    </script>
+
+    <!-- Sentry Error Tracking -->
+    <script src="https://browser.sentry-cdn.com/7.91.0/bundle.min.js" integrity="sha384-4/AchPJfmSY8jKJPu9xxQdKYxDGJPGVXN3l5XnBBaKDhqmFJfN0M5p5hK5x5l5Jz" crossorigin="anonymous"></script>
+    <script>
+        Sentry.init({
+            dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
+            integrations: [new Sentry.BrowserTracing()],
+            tracesSampleRate: 1.0,
+        });
+    </script>
+
+    <!-- Hotjar Tracking Code -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:3000000,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: #0f0f23;
+            color: #00ff41;
+            overflow-x: hidden;
+        }
+
+        /* Pixel grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .pixel-mascot {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 30px;
+            image-rendering: pixelated;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 0px #ff00ff, 8px 8px 0px #00ffff;
+            animation: glitch 5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+            98% { transform: translate(2px, 2px); }
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: #ff00ff;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #ff00ff;
+            color: #0f0f23;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border: 4px solid #00ffff;
+            box-shadow: 6px 6px 0px #00ffff;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: #00ffff;
+            border-color: #ff00ff;
+            box-shadow: 6px 6px 0px #ff00ff;
+            transform: translate(-2px, -2px);
+        }
+
+        .cta-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #ff00ff;
+        }
+
+        /* Pixel Divider */
+        .pixel-divider {
+            width: 100%;
+            height: 60px;
+            margin: 40px 0;
+            background: linear-gradient(90deg,
+                #ff00ff 0%, #ff00ff 25%,
+                transparent 25%, transparent 50%,
+                #00ffff 50%, #00ffff 75%,
+                transparent 75%, transparent 100%);
+            background-size: 40px 20px;
+            animation: scroll 2s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #00ffff;
+            text-align: center;
+            text-shadow: 3px 3px 0px #ff00ff;
+        }
+
+        .content-box {
+            background: rgba(255, 0, 255, 0.1);
+            border: 4px solid #ff00ff;
+            padding: 30px;
+            margin: 20px 0;
+            line-height: 2;
+            font-size: 0.7rem;
+            box-shadow: 8px 8px 0px rgba(0, 255, 255, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 3px solid #00ffff;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .feature-box:hover {
+            transform: scale(1.05);
+            border-color: #ff00ff;
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 0.9rem;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 0.6rem;
+            line-height: 1.6;
+            color: #00ff41;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 4px solid #ff00ff;
+        }
+
+        .footer-text {
+            font-size: 0.6rem;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #ff00ff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.7rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #00ffff;
+        }
+
+        /* Stars background */
+        .star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.3rem; }
+            .tagline { font-size: 0.8rem; }
+            .cta-button { font-size: 0.7rem; padding: 12px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <svg class="pixel-mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pixel robot character -->
+            <rect x="30" y="10" width="40" height="40" fill="#00ffff"/>
+            <rect x="35" y="15" width="10" height="10" fill="#0f0f23"/>
+            <rect x="55" y="15" width="10" height="10" fill="#0f0f23"/>
+            <rect x="45" y="30" width="10" height="5" fill="#ff00ff"/>
+            <rect x="20" y="50" width="60" height="30" fill="#ff00ff"/>
+            <rect x="35" y="55" width="8" height="15" fill="#00ffff"/>
+            <rect x="57" y="55" width="8" height="15" fill="#00ffff"/>
+            <rect x="15" y="45" width="10" height="20" fill="#00ff41"/>
+            <rect x="75" y="45" width="10" height="20" fill="#00ff41"/>
+            <rect x="30" y="80" width="15" height="10" fill="#00ffff"/>
+            <rect x="55" y="80" width="15" height="10" fill="#00ffff"/>
+        </svg>
+
+        <h1>PIXELVERSE</h1>
+        <p class="tagline">
+            &gt; Where Retro Vibes Meet Modern Code_
+        </p>
+        <a href="#features" class="cta-button">START QUEST</a>
+    </div>
+
+    <div class="pixel-divider"></div>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>&lt; ABOUT US /&gt;</h2>
+            <div class="content-box">
+                Welcome to the PixelVerse! We're bringing back the glory days of 8-bit gaming
+                with a modern twist. Our mission: make the web fun again, one pixel at a time.
+                No boring corporate stuff here - just pure, nostalgic awesome sauce!
+            </div>
+        </div>
+    </section>
+
+    <div class="pixel-divider"></div>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <h2>&lt; POWER-UPS /&gt;</h2>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">🎮</div>
+                    <div class="feature-title">Retro Vibes</div>
+                    <div class="feature-text">Pure 90s nostalgia in every pixel</div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Lightning Fast</div>
+                    <div class="feature-text">Loads faster than Sonic runs</div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🚀</div>
+                    <div class="feature-title">Super Powered</div>
+                    <div class="feature-text">All the integrations you need</div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">💎</div>
+                    <div class="feature-title">Pixel Perfect</div>
+                    <div class="feature-text">Every detail crafted with love</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="pixel-divider"></div>
+
+    <!-- CTA Section -->
+    <section id="cta" style="text-align: center;">
+        <div class="container">
+            <h2>&lt; JOIN THE QUEST /&gt;</h2>
+            <div class="content-box">
+                Ready to level up? Jump into the PixelVerse and experience the web
+                like it's 1999 (but better). Your adventure starts here!
+            </div>
+            <br><br>
+            <a href="#" class="cta-button" onclick="handleCTA(); return false;">PRESS START</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-text">
+            &copy; 2025 PixelVerse | Made with 💜 and pixels
+        </div>
+        <div class="social-links">
+            <a href="#">GitHub</a>
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+        </div>
+        <div class="footer-text" style="margin-top: 20px; opacity: 0.5;">
+            Powered by: Analytics, Intercom, Segment, Sentry, Hotjar
+        </div>
+    </footer>
+
+    <!-- Intercom Chat Widget -->
+    <script>
+        window.intercomSettings = {
+            api_base: "https://api-iam.intercom.io",
+            app_id: "YOUR_INTERCOM_APP_ID"
+        };
+    </script>
+    <script>
+        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/YOUR_INTERCOM_APP_ID';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+    </script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starCount = 50;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        // CTA Button Handler
+        function handleCTA() {
+            // Track with Segment
+            if (window.analytics) {
+                analytics.track('CTA Button Clicked', {
+                    location: 'main_page',
+                    button_text: 'PRESS START'
+                });
+            }
+
+            // Track with Google Analytics
+            if (window.gtag) {
+                gtag('event', 'click', {
+                    'event_category': 'engagement',
+                    'event_label': 'cta_button'
+                });
+            }
+
+            alert('🎮 Game On! Welcome to the PixelVerse! 🎮');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Track page engagement
+        let engagementTime = 0;
+        setInterval(() => {
+            engagementTime += 10;
+            if (engagementTime % 30 === 0 && window.analytics) {
+                analytics.track('Page Engagement', {
+                    seconds: engagementTime
+                });
+            }
+        }, 10000);
+
+        // Test error tracking (commented out - uncomment to test Sentry)
+        // setTimeout(() => {
+        //     throw new Error('Test error for Sentry tracking');
+        // }, 5000);
+    </script>
+</body>
+</html>
