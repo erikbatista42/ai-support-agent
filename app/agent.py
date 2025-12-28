@@ -1,5 +1,6 @@
 import os
 import datetime
+from zoneinfo import ZoneInfo
 import airtable
 from dotenv import load_dotenv
 from xai_sdk import Client
@@ -92,7 +93,7 @@ class Agent():
         found_scripts_data = {
                         "tool_used": "read_attachment",
                         "read_attachment_tool_response": response.content,
-                        "date_and_time": datetime.datetime.now().isoformat(),
+                        "date_and_time": datetime.datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p"),
                         "user_prompt": self.current_user_prompt,     
                         "human_verified": "not yet",
                         "response_script_url": "",
@@ -161,7 +162,7 @@ class Agent():
 
                         "user_prompt": self.current_user_prompt,
                         "website_checked": website_url,         
-                        "date_and_time": datetime.datetime.now().isoformat(),  
+                        "date_and_time": datetime.datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p"),  
                         "human_verified": "not yet",
                         "is_correct": "",   
                     }
@@ -185,7 +186,7 @@ class Agent():
                 "call_stack_summary": "",
                 "user_prompt": self.current_user_prompt,
                 "website_checked": website_url,
-                "date_and_time": datetime.datetime.now().isoformat(),
+                "date_and_time": datetime.datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p"),
                 "human_verified": "not yet",
                 "is_correct": "",
             }
@@ -203,16 +204,16 @@ class Agent():
 
 if __name__ == "__main__":
     agent = Agent(
-        file_id="file_3c2ea74b-8cbd-4d5b-b6df-24feb896be78", 
+        file_id="file_94997443-9e80-4386-a116-ee55a256aa7a", 
         system_prompt="You are an information agent. When the user wants to verify a script on a website, use the check_script_on_website tool. IMPORTANT: Always use the exact URLs listed in the document for the 'script_to_find' parameter - do not modify or guess different URLs.",
         at_table_name="agent_logs"
         )
 
     ''' sample prompt to ask about integration details '''
-    # How does the Intercom integration work?
+    # How does the Featurebase integration work?
 
     '''sample prompt to verify integration'''
-    # check in https://exquisite-mochi-134b2b.netlify.app/ if the intercom integration is connected on the website.
+    # check in https://pixel-verse-sample.netlify.app if the intercom integration is connected on the website.
     user_input = input("Ask about integrations within Erik's Site Builder: \n \n")
 
     print("Agent running...")
