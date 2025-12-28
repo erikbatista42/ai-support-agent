@@ -213,7 +213,7 @@ if __name__ == "__main__":
     # How does the Featurebase integration work?
 
     '''sample prompt to verify integration'''
-    # check in https://pixel-verse-sample.netlify.app if the intercom integration is connected on the website.
+    # check in https://pixel-verse-sample.netlify.app/ if the Featurebase integration is connected on the website.
     user_input = input("Ask about integrations within Erik's Site Builder: \n \n")
 
     print("Agent running...")
