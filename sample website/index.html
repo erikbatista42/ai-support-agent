@@ -1,48 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TT82FFZ4');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelVerse - Where Retro Meets Future</title>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
-
-    <!-- Segment Analytics -->
-    <script>
-        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="YOUR_SEGMENT_WRITE_KEY";analytics.SNIPPET_VERSION="4.15.3";
-        analytics.load("YOUR_SEGMENT_WRITE_KEY");
-        analytics.page();
-        }}();
-    </script>
-
-    <!-- Sentry Error Tracking -->
-    <script src="https://browser.sentry-cdn.com/7.91.0/bundle.min.js" integrity="sha384-4/AchPJfmSY8jKJPu9xxQdKYxDGJPGVXN3l5XnBBaKDhqmFJfN0M5p5hK5x5l5Jz" crossorigin="anonymous"></script>
-    <script>
-        Sentry.init({
-            dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
-            integrations: [new Sentry.BrowserTracing()],
-            tracesSampleRate: 1.0,
-        });
-    </script>
-
-    <!-- Hotjar Tracking Code -->
-    <script>
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:3000000,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -289,6 +259,10 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT82FFZ4"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
     <!-- Hero Section -->
     <div class="hero">
         <svg class="pixel-mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -384,23 +358,23 @@
             <a href="#">Discord</a>
         </div>
         <div class="footer-text" style="margin-top: 20px; opacity: 0.5;">
-            Powered by: Analytics, Intercom, Segment, Sentry, Hotjar
+            Powered by: Intercom
         </div>
     </footer>
 
-    <!-- Intercom Chat Widget -->
-    <script>
-        window.intercomSettings = {
-            api_base: "https://api-iam.intercom.io",
-            app_id: "YOUR_INTERCOM_APP_ID"
-        };
-    </script>
-    <script>
-        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/YOUR_INTERCOM_APP_ID';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-    </script>
+    
 
     <!-- Custom JavaScript -->
     <script>
+        // Track page view in GTM
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({
+            event: 'page_view',
+            page_title: document.title,
+            page_location: window.location.href,
+            page_path: window.location.pathname
+        });
+
         // Create animated stars
         function createStars() {
             const starCount = 50;
@@ -416,26 +390,6 @@
 
         createStars();
 
-        // CTA Button Handler
-        function handleCTA() {
-            // Track with Segment
-            if (window.analytics) {
-                analytics.track('CTA Button Clicked', {
-                    location: 'main_page',
-                    button_text: 'PRESS START'
-                });
-            }
-
-            // Track with Google Analytics
-            if (window.gtag) {
-                gtag('event', 'click', {
-                    'event_category': 'engagement',
-                    'event_label': 'cta_button'
-                });
-            }
-
-            alert('🎮 Game On! Welcome to the PixelVerse! 🎮');
-        }
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
